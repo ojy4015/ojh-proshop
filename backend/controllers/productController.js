@@ -6,7 +6,7 @@ import Product from '../models/productModel.js';
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
   // res.status(200).json({ message: 'Welcome to the Support Desk API' });
-  const pageSize = 2;
+  const pageSize = process.env.PAGINATION_LIMIT;
   // page number(query parameter) in the URL
   // console.log('req.query.pageNumber : ', req.query.pageNumber);
   const page = Number(req.query.pageNumber) || 1;
@@ -163,7 +163,7 @@ const getProductReviews = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    const pageSize = 2;
+    const pageSize = process.env.PAGINATION_LIMIT;
     // page number(query parameter) in the URL
     // console.log('req.query.pageNumber : ', req.query.pageNumber);
     const page = Number(req.query.pageNumber) || 1;

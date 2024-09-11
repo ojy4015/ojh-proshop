@@ -41,22 +41,19 @@ import {
   getProductReviews,
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
-// import checkObjectId from '../middleware/checkObjectId.js';
+import checkObjectId from '../middleware/checkObjectId.js';
 
 router.route('/').get(getProducts).post(protect, admin, createProduct);
 router
   .route('/:id/reviews')
-  .post(protect, createProductReview)
+  .post(protect, checkObjectId, createProductReview)
   .get(getProductReviews);
-// router.route('/:id/reviews').post(protect, checkObjectId, createProductReview);
+
 router.get('/top', getTopProducts);
 router
   .route('/:id')
-  .get(getProductById)
-  //   .get(checkObjectId, getProductById)
-  //   .put(protect, admin, checkObjectId, updateProduct)
-  .put(protect, admin, updateProduct)
-  .delete(protect, admin, deleteProduct);
-// .delete(protect, admin, checkObjectId, deleteProduct);
+  .get(checkObjectId, getProductById)
+  .put(protect, admin, checkObjectId, updateProduct)
+  .delete(protect, admin, checkObjectId, deleteProduct);
 
 export default router;

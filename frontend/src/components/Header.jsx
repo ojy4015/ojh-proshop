@@ -6,8 +6,8 @@ import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 import SearchBox from './SearchBox';
 import logo from '../assets/logo.png';
-import { clearCartItems } from '../slices/cartSlice';
 import { LinkContainer } from 'react-router-bootstrap';
+import { resetCart } from '../slices/cartSlice';
 
 const Header = () => {
   // get any state(cartItems, itemsPrice, shippingPrice,taxPrice,totalPrice) from cartSlice
@@ -27,8 +27,8 @@ const Header = () => {
 
       // NOTE: here we need to reset cart state for when a user logs out so the next
       // user doesn't inherit the previous users cart and shipping
-      // dispatch(resetCart());
-      dispatch(clearCartItems());
+      dispatch(resetCart());
+
       navigate('/login');
     } catch (err) {
       console.error(err);

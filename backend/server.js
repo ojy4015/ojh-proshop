@@ -59,21 +59,24 @@ app.get('/api/config/paypal', (req, res) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
 );
 
-// if (process.env.NODE_ENV === 'production') {
-//   const __dirname = path.resolve();
-//   app.use('/uploads', express.static('/var/data/uploads'));
-//   app.use(express.static(path.join(__dirname, '/frontend/build')));
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+  // set static folder
+  app.use('/uploads', express.static('/var/data/uploads'));
+  app.use(express.static(path.join(__dirname, '/frontend/build')));
 
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-//   );
-// } else {
-//   const __dirname = path.resolve();
-//   app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
-//   app.get('/', (req, res) => {
-//     res.send('API is running....');
-//   });
-// }
+  // any route that is not api will be redirected to index.html
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  );
+} else {
+  // using React Dev Server
+  const __dirname = path.resolve();
+  app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+  app.get('/', (req, res) => {
+    res.send('API is running....');
+  });
+}
 
 // Make uploads folder static
 const __dirname = path.resolve(); // Set __dirname to current directory
@@ -82,10 +85,10 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
-// app.listen(port, () =>
-//   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${port}`)
-// );
+// app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () =>
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${port}`)
+);
 
 // const server = () => {
 //   return console.log('Hello world');
